@@ -1,0 +1,25 @@
+{
+  "name": "mini-scripts",
+  "version": "1.0.0",
+  "description": "Random programming languages scripts",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flacial/mini-scripts.git"
+  },
+  "keywords": [
+    "cool-scripts"
+  ],
+  "author": "Flacial",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flacial/mini-scripts/issues"
+  },
+  "homepage": "https://github.com/flacial/mini-scripts#readme",
+  "devDependencies": {
+    "typescript": "^4.4.2"
+  }
+}
