@@ -44,7 +44,7 @@ Select Address Family:
                         s.close()
                         openPortsCount += 1
                         print(f"{port}   Open")
-                    except ConnectionRefusedError:
+                    except:
                         pass
 
                 if openPortsCount == 0:
