@@ -1,4 +1,8 @@
-const fizzBuzz = (logsCount: number, i: number = 0, word: string = ""): void => {
+const fizzBuzz = (
+  logsCount: number,
+  i: number = 0,
+  word: string = ""
+): void => {
   if (i >= logsCount) return;
 
   if (i % 3 === 0) word = "Fuzz";
@@ -10,4 +14,6 @@ const fizzBuzz = (logsCount: number, i: number = 0, word: string = ""): void => 
   return fizzBuzz(logsCount, i + 1, word);
 };
 
-fizzBuzz(100)
+//fizzBuzz(100)
+
+export { fizzBuzz };
