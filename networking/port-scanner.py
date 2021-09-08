@@ -82,7 +82,7 @@ if __name__ == "__main__":
         PortScanner(addressFamily, ip, port)
     else:
         raise SystemExit(
-            f"Usage: {sys.argv[0]} -af <address family (ipv4 or ipv6)> -h <ip address> -pr <port range (e.g. 300/100)>"
+            f"Usage: {sys.argv[0]} -af <address family (ipv4)> -h <ip address> -pr <port range (e.g. 300/100)>"
         )
 
 
