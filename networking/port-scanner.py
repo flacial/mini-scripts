@@ -2,16 +2,14 @@ import socket
 import re
 import sys
 
-# socket.AF_INET = Internet Address Family ipv6
-# socket.SOCK_STREAM = Socket type TCP
-# Port max = 65535
+
 class PortScanner:
     def __init__(self, addressFamily, host, port) -> None:
         self.host = host
         self.portRange = port
         self.addressFamily = addressFamily
         self.portScanner()
-    
+
     def createSocket(self, port) -> None:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((self.host, port))
@@ -19,22 +17,30 @@ class PortScanner:
 
     def findOpenPorts(self, rangeStart: int, rangeEnd: int) -> None:
         openPortsCount: int = 0
-
-        for port in range(int(rangeStart), int(rangeEnd) + 1):
+        portRange = range(int(rangeStart), int(rangeEnd) + 1)
+        
+        if portRange[-1] > 65535:
+            return print('[!] Port rangeEnd is greater than 65535')
+        
+        print('Attempting to Scan...\n')
+        for port in portRange:
             try:
                 self.createSocket(port)
                 openPortsCount += 1
                 print(f"{port}   Open")
-            except:
-                pass
+            except OSError as e:
+                if e.errno == 113:
+                    print('[!] No route to host. Make sure the host is reachable')
+                    return
         if openPortsCount == 0:
             print("\n[!] No open ports found")
             return
-        print(f"\n[#] {openPortsCount} open port{'s' if openPortsCount > 1 else ''} were found")
+        print(
+            f"\n[#] {openPortsCount} open port{'s' if openPortsCount > 1 else ''} were found"
+        )
 
     def getPortRange(self):
         portRe: str = "([\d]+[/][\d]+)"
-        # portRange: str = input("[?] Port range to scan (e.g. 20/300): ")
 
         validatePort: object = re.match(portRe, self.portRange)
         portMatch: bool = hasattr(validatePort, "group")
@@ -64,15 +70,22 @@ class PortScanner:
 
     def portScanner(self) -> None:
         if self.addressFamily == "ipv4":
-            self.ipv4Scan()
-            return
+            return self.ipv4Scan()
+        print('[!] Address family must be ipv4. ipv6 is not supported yet')
 
 if __name__ == "__main__":
     opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
     args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
 
-    if all(opt in opts for opt in ['-af', '-h', '-pr']):
+    if all(opt in opts for opt in ["-af", "-h", "-pr"]):
         addressFamily, ip, port = args
         PortScanner(addressFamily, ip, port)
     else:
-        raise SystemExit(f"Usage: {sys.argv[0]} -af <address family (ipv4 or ipv6)> -h <ip address> -pr <port range (e.g. 300/100)>")
+        raise SystemExit(
+            f"Usage: {sys.argv[0]} -af <address family (ipv4 or ipv6)> -h <ip address> -pr <port range (e.g. 300/100)>"
+        )
+
+
+# socket.AF_INET = Internet Address Family ipv6
+# socket.SOCK_STREAM = Socket type TCP
+# Port max = 65535
